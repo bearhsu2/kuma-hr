@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class GetTurnoverController {
 
 
-    private GetTurnoverService service;
+    private final GetTurnoverService service;
 
 
     @Autowired
