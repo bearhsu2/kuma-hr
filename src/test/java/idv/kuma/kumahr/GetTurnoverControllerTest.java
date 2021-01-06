@@ -15,19 +15,29 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class GetTurnoverControllerTest {
 
 
+    @MockBean
+    public GetTurnoverService getTurnoverService;
     @Autowired
     MockMvc mockMvc;
 
 
-    @MockBean
-    public GetTurnoverService getTurnoverService;
+    @Test
+    void illegal_month() throws Exception {
+
+
+        Mockito.when(getTurnoverService.calculate(1234, -1)).thenReturn(2000L);
+
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/turnover/1234/-1"))
+                .andExpect(status().is(400));
+    }
 
 
     @Test
     void all_ok() throws Exception {
 
 
-        Mockito.when(getTurnoverService.calculate(1234,12)).thenReturn(2000L);
+        Mockito.when(getTurnoverService.calculate(1234, 12)).thenReturn(2000L);
 
 
         mockMvc.perform(MockMvcRequestBuilders.get("/turnover/1234/12"))
