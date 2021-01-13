@@ -30,12 +30,17 @@ class GetTurnoverControllerTest {
     void illegal_month() throws Exception {
 
 
-        Mockito.when(getTurnoverService.calculate(any(YearMonth.class))).thenReturn(2000L);
+        assume_service_returns(2000L);
 
 
         when_user_query("/turnover/1234/-1");
 
         then_return_code_should_be(400);
+    }
+
+
+    private void assume_service_returns(long expect) {
+        Mockito.when(getTurnoverService.calculate(any(YearMonth.class))).thenReturn(expect);
     }
 
 
