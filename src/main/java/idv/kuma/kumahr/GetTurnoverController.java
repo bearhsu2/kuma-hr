@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.DateTimeException;
 import java.time.YearMonth;
 
 @RestController
@@ -25,13 +26,12 @@ public class GetTurnoverController {
     @GetMapping("/turnover/{year}/{month}")
     public long getTurnover(@PathVariable int year, @PathVariable int month) {
 
-        if (month <= 0) {
+        try {
+            return service.calculate(YearMonth.of(year, month));
+
+        } catch (DateTimeException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
-
-        YearMonth yearMonth = YearMonth.of(year, month);
-
-        return service.calculate(yearMonth);
 
 
     }
