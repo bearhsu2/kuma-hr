@@ -29,11 +29,16 @@ class GetTurnoverControllerTest {
     @Test
     void internal_error() throws Exception {
 
-        Mockito.when(getTurnoverService.calculate(YearMonth.of(1234, 12))).thenThrow(new GetTurnoverServiceException());
+        assume_service_throws(1234, 12, new GetTurnoverServiceException());
 
         when_user_query("/turnover/1234/12");
 
         then_return_code_should_be(500);
+    }
+
+
+    private void assume_service_throws(int year, int month, GetTurnoverServiceException e) throws GetTurnoverServiceException {
+        Mockito.when(getTurnoverService.calculate(YearMonth.of(year, month))).thenThrow(e);
     }
 
 
