@@ -31,7 +31,10 @@ public class GetTurnoverController {
 
         } catch (DateTimeException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        } catch (GetTurnoverServiceException e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+
 
 
     }

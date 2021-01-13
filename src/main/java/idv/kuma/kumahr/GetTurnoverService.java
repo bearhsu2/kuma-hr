@@ -7,7 +7,7 @@ import java.time.YearMonth;
 
 @Component
 public class GetTurnoverService {
-    public long calculate(YearMonth yearMonth) {
+    public long calculate(YearMonth yearMonth) throws GetTurnoverServiceException{
         return 0;
     }
 }

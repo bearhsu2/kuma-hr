@@ -27,26 +27,13 @@ class GetTurnoverControllerTest {
 
 
     @Test
-    void illegal_month() throws Exception {
+    void internal_error() throws Exception {
 
+        Mockito.when(getTurnoverService.calculate(YearMonth.of(1234, 12))).thenThrow(new GetTurnoverServiceException());
 
-        assume_service_returns(2000L);
+        when_user_query("/turnover/1234/12");
 
-
-        when_user_query("/turnover/1234/-1");
-
-        then_return_code_should_be(400);
-    }
-
-
-    private void assume_service_returns(long expect) {
-        Mockito.when(getTurnoverService.calculate(any(YearMonth.class))).thenReturn(expect);
-    }
-
-
-    private void assume_service_would_act_like(int year, int month, long expect) {
-        YearMonth yearMonth = YearMonth.of(year, month);
-        Mockito.when(getTurnoverService.calculate(yearMonth)).thenReturn(expect);
+        then_return_code_should_be(500);
     }
 
 
@@ -61,6 +48,22 @@ class GetTurnoverControllerTest {
 
 
     @Test
+    void illegal_month() throws Exception {
+
+        assume_service_returns(2000L);
+
+        when_user_query("/turnover/1234/-1");
+
+        then_return_code_should_be(400);
+    }
+
+
+    private void assume_service_returns(long expect) throws GetTurnoverServiceException {
+        Mockito.when(getTurnoverService.calculate(any(YearMonth.class))).thenReturn(expect);
+    }
+
+
+    @Test
     void all_ok() throws Exception {
 
 
@@ -71,6 +74,12 @@ class GetTurnoverControllerTest {
 
         then_return_ok();
         then_content_should_be("2000");
+    }
+
+
+    private void assume_service_would_act_like(int year, int month, long expect) throws GetTurnoverServiceException {
+        YearMonth yearMonth = YearMonth.of(year, month);
+        Mockito.when(getTurnoverService.calculate(yearMonth)).thenReturn(expect);
     }
 
 
