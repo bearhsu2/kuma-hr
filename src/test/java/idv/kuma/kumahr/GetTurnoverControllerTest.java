@@ -9,6 +9,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.time.YearMonth;
+
+import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -27,7 +30,7 @@ class GetTurnoverControllerTest {
     void illegal_month() throws Exception {
 
 
-        assume_service_would_act_like(1234, -1, 2000L);
+        Mockito.when(getTurnoverService.calculate(any(YearMonth.class))).thenReturn(2000L);
 
 
         when_user_query("/turnover/1234/-1");
@@ -36,8 +39,9 @@ class GetTurnoverControllerTest {
     }
 
 
-    private void then_return_code_should_be(int status) throws Exception {
-        actual.andExpect(status().is(status));
+    private void assume_service_would_act_like(int year, int month, long expect) {
+        YearMonth yearMonth = YearMonth.of(year, month);
+        Mockito.when(getTurnoverService.calculate(yearMonth)).thenReturn(expect);
     }
 
 
@@ -46,8 +50,8 @@ class GetTurnoverControllerTest {
     }
 
 
-    private void assume_service_would_act_like(int year, int month, long expect) {
-        Mockito.when(getTurnoverService.calculate(year, month)).thenReturn(expect);
+    private void then_return_code_should_be(int status) throws Exception {
+        actual.andExpect(status().is(status));
     }
 
 
@@ -65,12 +69,12 @@ class GetTurnoverControllerTest {
     }
 
 
-    private void then_content_should_be(String content) throws Exception {
-        actual.andExpect(content().string(content));
+    private void then_return_ok() throws Exception {
+        actual.andExpect(status().isOk());
     }
 
 
-    private void then_return_ok() throws Exception {
-        actual.andExpect(status().isOk());
+    private void then_content_should_be(String content) throws Exception {
+        actual.andExpect(content().string(content));
     }
 }
