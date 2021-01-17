@@ -2,10 +2,10 @@ package idv.kuma.kumahr;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.time.DateTimeException;
 import java.time.YearMonth;
@@ -24,17 +24,22 @@ public class GetTurnoverController {
 
 
     @GetMapping("/turnover/{year}/{month}")
-    public long getTurnover(@PathVariable int year, @PathVariable int month) {
+    public ResponseEntity<Long> getTurnover(@PathVariable int year, @PathVariable int month) {
 
         try {
-            return service.calculate(YearMonth.of(year, month));
+
+            return ResponseEntity.ok(
+                    service.calculate(YearMonth.of(year, month))
+            );
 
         } catch (DateTimeException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        } catch (GetTurnoverServiceException e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
 
+            return ResponseEntity.badRequest().build();
+
+        } catch (GetTurnoverServiceException e) {
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
 
 
     }
