@@ -1,4 +1,4 @@
-package idv.kuma.kumahr;
+package idv.kuma.landlord.turnover.service;
 
 
 import org.springframework.stereotype.Component;

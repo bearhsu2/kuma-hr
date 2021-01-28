@@ -1,4 +1,4 @@
-package idv.kuma.kumahr;
+package idv.kuma.landlord.turnover.entity;
 
 public class Contract {
     private long rent;

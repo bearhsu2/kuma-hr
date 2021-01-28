@@ -1,4 +1,4 @@
-package idv.kuma.kumahr;
+package idv.kuma.landlord;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
