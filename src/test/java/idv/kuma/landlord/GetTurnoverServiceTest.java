@@ -15,46 +15,54 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class GetTurnoverServiceTest {
 
+
+    public ContractRepository repository;
+    public long actual;
+
+
     @Test
     void All_Ok() throws GetTurnoverServiceException {
 
+        given_contracts(new Contract(30L, LocalDate.of(1234, 6, 30)));
 
+        when_query(1234, 6);
 
-        ContractRepository mockedRepository = Mockito.mock(ContractRepository.class);
-        Mockito.when(mockedRepository.findAll()).thenReturn(
-
-                Arrays.asList(
-                        new Contract(30L, LocalDate.of(1234, 6, 30))
-                )
-        );
-
-        GetTurnoverService service = new GetTurnoverService(mockedRepository);
-
-        long actual = service.calculate(YearMonth.of(1234, 6));
-
-
-        assertEquals(30L, actual);
+        then_should_return(30L);
 
     }
+
+
+    private void given_contracts(Contract... contract) {
+        repository = Mockito.mock(ContractRepository.class);
+        Mockito.when(repository.findAll()).thenReturn(
+
+                Arrays.asList(
+                        contract
+                )
+        );
+    }
+
+
+    private void when_query(int year, int month) throws GetTurnoverServiceException {
+        GetTurnoverService service = new GetTurnoverService(repository);
+
+        actual = service.calculate(YearMonth.of(year, month));
+    }
+
+
+    private void then_should_return(long expected) {
+        assertEquals(expected, actual);
+    }
+
+
     @Test
     void Early_leave_short() throws GetTurnoverServiceException {
 
+        given_contracts(new Contract(30L, LocalDate.of(1234, 6, 14)));
 
+        when_query(1234, 6);
 
-        ContractRepository mockedRepository = Mockito.mock(ContractRepository.class);
-        Mockito.when(mockedRepository.findAll()).thenReturn(
-
-                Arrays.asList(
-                        new Contract(30L, LocalDate.of(1234, 6, 14))
-                )
-        );
-
-        GetTurnoverService service = new GetTurnoverService(mockedRepository);
-
-        long actual = service.calculate(YearMonth.of(1234, 6));
-
-
-        assertEquals(15L, actual);
+        then_should_return(15L);
 
     }
 
