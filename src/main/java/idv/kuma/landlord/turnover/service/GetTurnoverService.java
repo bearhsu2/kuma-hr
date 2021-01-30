@@ -6,6 +6,8 @@ import org.springframework.stereotype.Component;
 
 import java.time.YearMonth;
 
+import static java.time.temporal.ChronoUnit.DAYS;
+
 @Component
 public class GetTurnoverService {
 
@@ -23,7 +25,15 @@ public class GetTurnoverService {
         Contract contract = repository.findAll().get(0);
 
         if (contract.getEndDate().isBefore(yearMonth.atEndOfMonth())) {
-            return contract.getRent() / 2;
+
+            long diff = DAYS.between(yearMonth.atDay(1), contract.getEndDate()) + 1;
+
+
+            if (diff >= 15) {
+                return contract.getRent();
+            } else {
+                return contract.getRent() / 2;
+            }
         }
 
 

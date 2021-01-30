@@ -65,5 +65,15 @@ class GetTurnoverServiceTest {
         then_should_return(15L);
 
     }
+    @Test
+    void Early_leave_long() throws GetTurnoverServiceException {
+
+        given_contracts(new Contract(30L, LocalDate.of(1234, 6, 15)));
+
+        when_query(1234, 6);
+
+        then_should_return(30L);
+
+    }
 
 }
