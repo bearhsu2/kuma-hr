@@ -30,6 +30,10 @@ public class GetTurnoverService {
 
             return diff >= 15 ? contract.getRent() : contract.getRent() / 2;
 
+        } else if (contract.getStartDate().isAfter(yearMonth.atDay(1))) {
+
+            return contract.getRent() / 2;
+
         }
 
 

@@ -4,6 +4,16 @@ import java.time.LocalDate;
 
 public class Contract {
     private long rent;
+    private LocalDate startDate;
+    private LocalDate endDate;
+
+
+    public Contract(long rent, LocalDate startDate, LocalDate endDate) {
+
+        this.rent = rent;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
 
 
     public LocalDate getEndDate() {
@@ -16,13 +26,13 @@ public class Contract {
     }
 
 
-    private LocalDate endDate;
+    public LocalDate getStartDate() {
+        return startDate;
+    }
 
 
-    public Contract(long rent, LocalDate endDate) {
-
-        this.rent = rent;
-        this.endDate = endDate;
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
     }
 
 

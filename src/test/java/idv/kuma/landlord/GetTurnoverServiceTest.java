@@ -23,7 +23,10 @@ class GetTurnoverServiceTest {
     @Test
     void All_Ok() throws GetTurnoverServiceException {
 
-        given_contracts(new Contract(30L, LocalDate.of(1234, 6, 30)));
+        given_contracts(new Contract(
+                30L,
+                LocalDate.of(1234, 6, 1),
+                LocalDate.of(1234, 6, 30)));
 
         when_query(1234, 6);
 
@@ -58,17 +61,25 @@ class GetTurnoverServiceTest {
     @Test
     void Early_leave_short() throws GetTurnoverServiceException {
 
-        given_contracts(new Contract(30L, LocalDate.of(1234, 6, 14)));
+        given_contracts(new Contract(
+                30L,
+                LocalDate.of(1234, 6, 1),
+                LocalDate.of(1234, 6, 14)));
 
         when_query(1234, 6);
 
         then_should_return(15L);
 
     }
+
+
     @Test
     void Early_leave_long() throws GetTurnoverServiceException {
 
-        given_contracts(new Contract(30L, LocalDate.of(1234, 6, 15)));
+        given_contracts(new Contract(
+                30L,
+                LocalDate.of(1234, 6, 1),
+                LocalDate.of(1234, 6, 15)));
 
         when_query(1234, 6);
 
@@ -76,4 +87,19 @@ class GetTurnoverServiceTest {
 
     }
 
+
+    @Test
+    void Late_move_in_short() throws GetTurnoverServiceException {
+
+        given_contracts(new Contract(
+                30L,
+                LocalDate.of(1234, 6, 17),
+                LocalDate.of(1234, 6, 30))
+        );
+
+        when_query(1234, 6);
+
+        then_should_return(15L);
+
+    }
 }
