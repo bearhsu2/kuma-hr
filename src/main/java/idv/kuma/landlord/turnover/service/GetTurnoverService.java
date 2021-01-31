@@ -32,8 +32,9 @@ public class GetTurnoverService {
 
         } else if (contract.getStartDate().isAfter(yearMonth.atDay(1))) {
 
-            return contract.getRent() / 2;
+            long diff = DAYS.between(contract.getStartDate(), yearMonth.atEndOfMonth()) + 1;
 
+            return diff >= 15 ? contract.getRent() : contract.getRent() / 2;
         }
 
 
